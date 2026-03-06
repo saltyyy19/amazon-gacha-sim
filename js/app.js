@@ -12,6 +12,11 @@ const btnSaveImage = document.getElementById('btn-save-image');
 const resultsGrid = document.getElementById('results-grid');
 const pullCountEl = document.getElementById('pull-count');
 
+// Modal Elements
+const modalImage = document.getElementById('modal-image');
+const btnCloseModal = document.getElementById('btn-close-modal');
+const generatedImagePreview = document.getElementById('generated-image-preview');
+
 // State
 let pullCount = parseInt(localStorage.getItem(PULL_COUNT_KEY)) || 0;
 let currentResults = [];
@@ -24,6 +29,9 @@ function init() {
     btnPullAgain.addEventListener('click', resetToGachaScreen);
     btnShare.addEventListener('click', shareToX);
     btnSaveImage.addEventListener('click', saveResultsAsImage);
+    btnCloseModal.addEventListener('click', () => {
+        modalImage.classList.add('hidden');
+    });
 }
 
 function updatePullCountDisplay() {
@@ -181,18 +189,15 @@ function saveResultsAsImage() {
     // Use html2canvas to capture the results grid
     html2canvas(document.getElementById('screen-results'), {
         backgroundColor: '#0f172a', // Match the body background
-        scale: 2 // Higher resolution
+        scale: 2, // Higher resolution
+        useCORS: true // Ensure remote images (if any eventually) are loaded
     }).then(canvas => {
         // Convert to data URL
-        const image = canvas.toDataURL("image/png");
+        const imageBase64 = canvas.toDataURL("image/png");
 
-        // Create temporary download link
-        const a = document.createElement('a');
-        a.href = image;
-        a.download = `amazon_gacha_result_${new Date().getTime()}.png`;
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
+        // Display the image in the modal
+        generatedImagePreview.src = imageBase64;
+        modalImage.classList.remove('hidden');
 
         // Reset button
         btnSaveImage.innerText = originalText;
