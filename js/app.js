@@ -186,28 +186,43 @@ function saveResultsAsImage() {
     btnSaveImage.innerText = '生成中...';
     btnSaveImage.disabled = true;
 
-    // Use html2canvas to capture the results grid
-    html2canvas(document.getElementById('screen-results'), {
-        backgroundColor: '#0f172a', // Match the body background
-        scale: 2, // Higher resolution
-        useCORS: true // Ensure remote images (if any eventually) are loaded
-    }).then(canvas => {
-        // Convert to data URL
-        const imageBase64 = canvas.toDataURL("image/png");
+    // Save current scroll position and scroll to top
+    // This is a crucial fix for iOS/Mobile Safari where html2canvas crops the image if scrolled down
+    const originalScrollY = window.scrollY;
+    window.scrollTo(0, 0);
 
-        // Display the image in the modal
-        generatedImagePreview.src = imageBase64;
-        modalImage.classList.remove('hidden');
+    // Add a slight delay to ensure the browser paints the scroll position before capture
+    setTimeout(() => {
+        // Use html2canvas to capture the results grid
+        const targetElement = document.getElementById('screen-results');
 
-        // Reset button
-        btnSaveImage.innerText = originalText;
-        btnSaveImage.disabled = false;
-    }).catch(err => {
-        console.error('Error generating image:', err);
-        alert('画像の生成に失敗しました。');
-        btnSaveImage.innerText = originalText;
-        btnSaveImage.disabled = false;
-    });
+        html2canvas(targetElement, {
+            backgroundColor: '#0f172a', // Match the body background
+            scale: window.devicePixelRatio || 2, // Use device pixel ratio for sharper bounds on retina
+            useCORS: true,
+            scrollY: -window.scrollY, // Fix offset
+            windowWidth: document.documentElement.offsetWidth,
+            windowHeight: document.documentElement.scrollHeight
+        }).then(canvas => {
+            // Convert to data URL
+            const imageBase64 = canvas.toDataURL("image/png");
+
+            // Display the image in the modal
+            generatedImagePreview.src = imageBase64;
+            modalImage.classList.remove('hidden');
+
+            // Reset button and scroll
+            btnSaveImage.innerText = originalText;
+            btnSaveImage.disabled = false;
+            window.scrollTo(0, originalScrollY);
+        }).catch(err => {
+            console.error('Error generating image:', err);
+            alert('画像の生成に失敗しました。');
+            btnSaveImage.innerText = originalText;
+            btnSaveImage.disabled = false;
+            window.scrollTo(0, originalScrollY);
+        });
+    }, 150);
 }
 
 // Run
