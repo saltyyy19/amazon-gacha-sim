@@ -246,19 +246,55 @@ main {
 }
 
 .box-sprite {
-    font-size: 6rem;
-    animation: shakeGacha 0.5s infinite;
+    font-size: 8rem;
     display: inline-block;
-    filter: drop-shadow(0 0 20px rgba(245, 158, 11, 0.5));
+    transition: filter 0.5s ease-out, transform 0.5s ease-out;
 }
 
-@keyframes shakeGacha {
+/* Base Normal state */
+.box-n {
+    filter: drop-shadow(0 0 10px rgba(148, 163, 184, 0.5));
+    animation: shakeGachaNormal 0.6s infinite;
+}
+
+/* Rare state (Blue glow) */
+.box-r {
+    filter: drop-shadow(0 0 25px rgba(59, 130, 246, 0.8));
+    transform: scale(1.05);
+    animation: shakeGachaRare 0.4s infinite;
+}
+
+/* Super Rare state (Purple pulse) */
+.box-sr {
+    filter: drop-shadow(0 0 35px rgba(168, 85, 247, 1));
+    transform: scale(1.15);
+    animation: shakeGachaSR 0.2s infinite, pulseSRPromotion 1s infinite alternate;
+}
+
+/* SSR state (Gold extreme shake) */
+.box-ssr {
+    filter: drop-shadow(0 0 50px rgba(245, 158, 11, 1));
+    transform: scale(1.25);
+    animation: shakeGachaSSR 0.1s infinite;
+}
+
+@keyframes pulseSRPromotion {
+    0% {
+        filter: drop-shadow(0 0 20px rgba(168, 85, 247, 0.6));
+    }
+
+    100% {
+        filter: drop-shadow(0 0 50px rgba(168, 85, 247, 1));
+    }
+}
+
+@keyframes shakeGachaNormal {
     0% {
         transform: rotate(0deg) scale(1);
     }
 
     25% {
-        transform: rotate(-10deg) scale(1.05);
+        transform: rotate(-5deg) scale(1.02);
     }
 
     50% {
@@ -266,11 +302,77 @@ main {
     }
 
     75% {
-        transform: rotate(10deg) scale(1.05);
+        transform: rotate(5deg) scale(1.02);
     }
 
     100% {
         transform: rotate(0deg) scale(1);
+    }
+}
+
+@keyframes shakeGachaRare {
+    0% {
+        transform: rotate(0deg) scale(1.05);
+    }
+
+    25% {
+        transform: rotate(-10deg) scale(1.07);
+    }
+
+    50% {
+        transform: rotate(0deg) scale(1.05);
+    }
+
+    75% {
+        transform: rotate(10deg) scale(1.07);
+    }
+
+    100% {
+        transform: rotate(0deg) scale(1.05);
+    }
+}
+
+@keyframes shakeGachaSR {
+    0% {
+        transform: rotate(0deg) scale(1.15) translateY(0);
+    }
+
+    25% {
+        transform: rotate(-15deg) scale(1.15) translateY(-5px);
+    }
+
+    50% {
+        transform: rotate(0deg) scale(1.15) translateY(0);
+    }
+
+    75% {
+        transform: rotate(15deg) scale(1.15) translateY(-5px);
+    }
+
+    100% {
+        transform: rotate(0deg) scale(1.15) translateY(0);
+    }
+}
+
+@keyframes shakeGachaSSR {
+    0% {
+        transform: rotate(0deg) scale(1.25) translateY(0);
+    }
+
+    25% {
+        transform: rotate(-25deg) scale(1.25) translateY(-10px);
+    }
+
+    50% {
+        transform: rotate(0deg) scale(1.25) translateY(0);
+    }
+
+    75% {
+        transform: rotate(25deg) scale(1.25) translateY(-10px);
+    }
+
+    100% {
+        transform: rotate(0deg) scale(1.25) translateY(0);
     }
 }
 
