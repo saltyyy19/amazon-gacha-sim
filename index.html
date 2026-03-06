@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Amazon 10連ガチャシミュレーター</title>
+    <meta name="description" content="完全無料でAmazonのヤバい商品10連ガチャが回せるシミュレーター。あなたは何を引き当てる？">
+    <link rel="stylesheet" href="css/style.css">
+
+    <!-- Open Graph for social sharing -->
+    <meta property="og:title" content="Amazon 10連ガチャシミュレーター">
+    <meta property="og:description" content="無料でAmazonのヤバい商品10連ガチャが回せるシミュレーター。SSRの純金を引き当てろ！">
+    <meta property="og:type" content="website">
+    <meta name="twitter:card" content="summary_large_image">
+</head>
+
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <header>
+            <div class="logo">📦 Amazon Gacha Sim</div>
+            <div class="pull-count" id="pull-count">総ガチャ回数: 0回</div>
+        </header>
+
+        <!-- Main Content -->
+        <main>
+            <!-- Gacha Screen -->
+            <section id="screen-gacha" class="screen active">
+                <div class="banner">
+                    <h2>ピックアップガチャ開催中！</h2>
+                    <p>【SSR】全自動麻雀卓 / 純金インゴット (排出率 1.5%)</p>
+                    <div class="banner-image-placeholder">
+                        <span class="sparkle">✨</span> 伝説のアイテムを手に入れろ <span class="sparkle">✨</span>
+                    </div>
+                </div>
+
+                <div class="action-area">
+                    <button id="btn-pull-10" class="btn-gacha pulse">
+                        <span class="btn-text">📦 無料で10連を回す 📦</span>
+                    </button>
+                    <p class="disclaimer">※実際のお金はかかりません。結果からAmazonの検索ページへ移動できます。</p>
+                </div>
+            </section>
+
+            <!-- Animation Screen (Hidden by default) -->
+            <section id="screen-animation" class="screen hidden">
+                <div class="animation-container">
+                    <div class="box-sprite" id="gacha-box">🎁</div>
+                    <h2 class="loading-text">結果を取得中...</h2>
+                </div>
+            </section>
+
+            <!-- Results Screen (Hidden by default) -->
+            <section id="screen-results" class="screen hidden">
+                <h2>🎉 ガチャ結果 🎉</h2>
+
+                <div class="results-grid" id="results-grid">
+                    <!-- Cards will be injected here by JS -->
+                </div>
+
+                <div class="results-actions">
+                    <button id="btn-share" class="btn-share">𝕏 結果をシェアする</button>
+                    <button id="btn-pull-again" class="btn-secondary">🔄 もう一度回す</button>
+                </div>
+            </section>
+        </main>
+
+        <!-- Footer -->
+        <footer>
+            <p>&copy; 2026 Amazon Gacha Sim. This application is an unofficial simulator.</p>
+            <p class="amazon-disclosure">
+                ※当サイトは、Amazon.co.jpを宣伝しリンクすることによってサイトが紹介料を獲得できる手段を提供することを目的に設定されたアフィリエイトプログラムである、Amazonアソシエイト・プログラムの参加者です。
+            </p>
+        </footer>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/data.js"></script>
+    <script src="js/app.js"></script>
+</body>
+
+</html>
