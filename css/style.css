@@ -444,8 +444,9 @@ main {
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
-    height: 2.6em;
-    /* Roughly 2 lines */
+    line-height: 1.5;
+    height: 3em;
+    /* 1.5 line-height * 2 lines */
 }
 
 .item-rarity {
@@ -661,3 +662,18 @@ main {
 }
 
 /* The new gacha shake animation logic is handled above, so these are removed */
+/* HTML2Canvas and Buttons specific styling */
+.results-actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-top: 1.5rem;
+}
+.btn-secondary, .btn-share {
+    flex: 1;
+    min-width: 140px;
+    font-size: 0.85rem;
+    padding: 0.75rem;
+}
+

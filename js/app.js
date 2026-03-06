@@ -8,6 +8,7 @@ const screenResults = document.getElementById('screen-results');
 const btnPull10 = document.getElementById('btn-pull-10');
 const btnPullAgain = document.getElementById('btn-pull-again');
 const btnShare = document.getElementById('btn-share');
+const btnSaveImage = document.getElementById('btn-save-image');
 const resultsGrid = document.getElementById('results-grid');
 const pullCountEl = document.getElementById('pull-count');
 
@@ -22,6 +23,7 @@ function init() {
     btnPull10.addEventListener('click', doGachaPull);
     btnPullAgain.addEventListener('click', resetToGachaScreen);
     btnShare.addEventListener('click', shareToX);
+    btnSaveImage.addEventListener('click', saveResultsAsImage);
 }
 
 function updatePullCountDisplay() {
@@ -168,6 +170,39 @@ function shareToX() {
 
     const tweetUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`;
     window.open(tweetUrl, '_blank');
+}
+
+// Generate Image
+function saveResultsAsImage() {
+    const originalText = btnSaveImage.innerText;
+    btnSaveImage.innerText = '生成中...';
+    btnSaveImage.disabled = true;
+
+    // Use html2canvas to capture the results grid
+    html2canvas(document.getElementById('screen-results'), {
+        backgroundColor: '#0f172a', // Match the body background
+        scale: 2 // Higher resolution
+    }).then(canvas => {
+        // Convert to data URL
+        const image = canvas.toDataURL("image/png");
+
+        // Create temporary download link
+        const a = document.createElement('a');
+        a.href = image;
+        a.download = `amazon_gacha_result_${new Date().getTime()}.png`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+
+        // Reset button
+        btnSaveImage.innerText = originalText;
+        btnSaveImage.disabled = false;
+    }).catch(err => {
+        console.error('Error generating image:', err);
+        alert('画像の生成に失敗しました。');
+        btnSaveImage.innerText = originalText;
+        btnSaveImage.disabled = false;
+    });
 }
 
 // Run
