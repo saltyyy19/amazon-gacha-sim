@@ -758,3 +758,26 @@ main {
     border-radius: 8px;
     border: 1px solid #334155;
 }
+
+/* ==========================================================================
+   Image Generation State (Export Mode)
+   ========================================================================== */
+body.generating-image .results-actions {
+    display: none !important;
+}
+
+body.generating-image .item-card .amazon-search-link {
+    display: none !important;
+}
+
+body.generating-image .item-card {
+    padding-bottom: 0.5rem !important;
+    /* Reduce bottom padding since button is gone */
+    min-height: auto !important;
+}
+
+body.generating-image .item-info {
+    margin-bottom: 0 !important;
+    /* Remove space reserved for button */
+    padding-bottom: 0 !important;
+}

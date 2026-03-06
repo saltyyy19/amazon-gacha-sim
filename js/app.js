@@ -189,14 +189,8 @@ function saveResultsAsImage() {
 
     const targetElement = document.getElementById('screen-results');
 
-    // Hide actions visually during capture using a filter
-    const filterFunc = (node) => {
-        // Exclude the results-actions div
-        if (node.classList && node.classList.contains('results-actions')) {
-            return false;
-        }
-        return true;
-    };
+    // Add a temporary class to body to hide buttons and let the layout collapse naturally
+    document.body.classList.add('generating-image');
 
     // dom-to-image is much more reliable for mobile flex layouts
     // Use an extra scale factor for retina sharpness
@@ -205,33 +199,39 @@ function saveResultsAsImage() {
     // Temporarily ensure the element isn't hidden by scroll
     window.scrollTo(0, 0);
 
-    domtoimage.toPng(targetElement, {
-        filter: filterFunc,
-        bgcolor: '#0f172a',
-        width: targetElement.offsetWidth * scale,
-        height: targetElement.offsetHeight * scale,
-        style: {
-            transform: `scale(${scale})`,
-            transformOrigin: 'top left',
-            width: `${targetElement.offsetWidth}px`,
-            height: `${targetElement.offsetHeight}px`
-        }
-    })
-        .then(function (dataUrl) {
-            // Display the image in the modal
-            generatedImagePreview.src = dataUrl;
-            modalImage.classList.remove('hidden');
-
-            // Reset button
-            btnSaveImage.innerText = originalText;
-            btnSaveImage.disabled = false;
+    // Give the browser a tiny moment to reflow the layout without the buttons
+    setTimeout(() => {
+        domtoimage.toPng(targetElement, {
+            bgcolor: '#0f172a',
+            width: targetElement.offsetWidth * scale,
+            height: targetElement.offsetHeight * scale,
+            style: {
+                transform: `scale(${scale})`,
+                transformOrigin: 'top left',
+                width: `${targetElement.offsetWidth}px`,
+                height: `${targetElement.offsetHeight}px`
+            }
         })
-        .catch(function (error) {
-            console.error('Error generating image!', error);
-            alert('画像の生成に失敗しました。');
-            btnSaveImage.innerText = originalText;
-            btnSaveImage.disabled = false;
-        });
+            .then(function (dataUrl) {
+                // Remove the layout class
+                document.body.classList.remove('generating-image');
+
+                // Display the image in the modal
+                generatedImagePreview.src = dataUrl;
+                modalImage.classList.remove('hidden');
+
+                // Reset button
+                btnSaveImage.innerText = originalText;
+                btnSaveImage.disabled = false;
+            })
+            .catch(function (error) {
+                document.body.classList.remove('generating-image');
+                console.error('Error generating image!', error);
+                alert('画像の生成に失敗しました。');
+                btnSaveImage.innerText = originalText;
+                btnSaveImage.disabled = false;
+            });
+    }, 100);
 }
 
 // Run
