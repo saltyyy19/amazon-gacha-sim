@@ -189,42 +189,49 @@ function saveResultsAsImage() {
 
     const targetElement = document.getElementById('screen-results');
 
-    // Create an off-screen clone container to prevent viewport cropping
-    const cloneContainer = document.createElement('div');
-    cloneContainer.style.position = 'absolute';
-    cloneContainer.style.top = '0';
-    cloneContainer.style.left = '-9999px';
-    cloneContainer.style.width = targetElement.offsetWidth + 'px';
-    cloneContainer.style.height = 'auto'; // Force full height
-    cloneContainer.style.overflow = 'visible';
+    // iOS Safari specific fix: Clone off-screen often fails. 
+    // We must temporarily modify the live DOM to expand fully.
+    const html = document.documentElement;
+    const body = document.body;
+    const appContainer = document.querySelector('.app-container');
 
-    // Clone the element and apply specific un-clipping styles
-    const clone = targetElement.cloneNode(true);
-    clone.style.height = 'auto';
-    clone.style.overflow = 'visible';
-    clone.style.padding = '1rem'; // Ensure padding isn't lost
-    clone.classList.remove('hidden'); // Ensure it's active
+    // Save original styles and scroll
+    const origHtmlHeight = html.style.height;
+    const origBodyHeight = body.style.height;
+    const origAppHeight = appContainer.style.height;
+    const origAppMinHeight = appContainer.style.minHeight;
+    const origScrollY = window.scrollY;
 
-    // Hide actions in the clone
-    const actionsClone = clone.querySelector('.results-actions');
-    if (actionsClone) {
-        actionsClone.style.display = 'none';
+    // Expand all containers to auto height to remove any hidden bounds
+    html.style.height = 'auto';
+    body.style.height = 'auto';
+    appContainer.style.height = 'auto';
+    appContainer.style.minHeight = 'auto';
+
+    // Hide actions
+    if (resultsActions) {
+        resultsActions.style.display = 'none';
     }
 
-    cloneContainer.appendChild(clone);
-    // Append to app-container to inherit CSS cascades properly
-    document.querySelector('.app-container').appendChild(cloneContainer);
+    // Scroll to top to prevent rendering offsets
+    window.scrollTo(0, 0);
 
-    // Give the DOM a moment to paint the clone
+    // Give the DOM a moment to re-layout
     setTimeout(() => {
-        html2canvas(clone, {
+        html2canvas(targetElement, {
             backgroundColor: '#0f172a', // Match the body background
             scale: window.devicePixelRatio || 2, // Retina support
             useCORS: true,
-            logging: false
+            windowWidth: html.scrollWidth,
+            windowHeight: html.scrollHeight
         }).then(canvas => {
-            // Clean up the clone
-            cloneContainer.remove();
+            // Restore styles
+            html.style.height = origHtmlHeight;
+            body.style.height = origBodyHeight;
+            appContainer.style.height = origAppHeight;
+            appContainer.style.minHeight = origAppMinHeight;
+            if (resultsActions) resultsActions.style.display = '';
+            window.scrollTo(0, origScrollY);
 
             // Convert to data URL
             const imageBase64 = canvas.toDataURL("image/png");
@@ -237,7 +244,14 @@ function saveResultsAsImage() {
             btnSaveImage.innerText = originalText;
             btnSaveImage.disabled = false;
         }).catch(err => {
-            cloneContainer.remove();
+            // Restore styles
+            html.style.height = origHtmlHeight;
+            body.style.height = origBodyHeight;
+            appContainer.style.height = origAppHeight;
+            appContainer.style.minHeight = origAppMinHeight;
+            if (resultsActions) resultsActions.style.display = '';
+            window.scrollTo(0, origScrollY);
+
             console.error('Error generating image:', err);
             alert('画像の生成に失敗しました。');
             btnSaveImage.innerText = originalText;
