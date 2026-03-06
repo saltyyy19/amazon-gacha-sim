@@ -479,3 +479,71 @@ main {
         font-size: 2rem;
     }
 }
+/* Enhanced Buy Button */
+.buy-btn {
+    margin-top: 10px;
+    background: linear-gradient(180deg, #fcd200 0%, #f59e0b 100%);
+    color: #111;
+    font-size: 0.75rem;
+    font-weight: bold;
+    padding: 0.4rem 0.8rem;
+    border-radius: 4px;
+    width: 100%;
+    text-align: center;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    transition: transform 0.2s, filter 0.2s;
+}
+
+.item-card:hover .buy-btn {
+    transform: scale(1.05);
+    filter: brightness(1.1);
+}
+
+/* More dramatic SSR glow */
+@keyframes glowingRainbow {
+    0% { background-position: 0 0; }
+    50% { background-position: 400% 0; }
+    100% { background-position: 0 0; }
+}
+
+.rarity-ssr::after {
+    content: '';
+    position: absolute;
+    top: 0; left: -100%; right: 0; bottom: 0;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+    animation: sweep 2s infinite;
+    z-index: 2;
+    pointer-events: none;
+}
+
+@keyframes sweep {
+    0% { left: -100%; }
+    50% { left: 100%; }
+    100% { left: 100%; }
+}
+
+/* Make SR pulse slightly */
+.rarity-sr {
+    animation: pulseSR 2s infinite alternate;
+}
+
+@keyframes pulseSR {
+    0% { box-shadow: 0 0 10px rgba(168, 85, 247, 0.3); }
+    100% { box-shadow: 0 0 20px rgba(168, 85, 247, 0.8); }
+}
+
+/* Animation Container Enhancements */
+.box-sprite {
+    font-size: 8rem;
+    filter: drop-shadow(0 0 30px rgba(245, 158, 11, 0.8));
+    animation: shakeGacha 0.3s infinite;
+}
+
+@keyframes shakeGacha {
+    0% { transform: rotate(0deg) scale(1) translateY(0); }
+    25% { transform: rotate(-15deg) scale(1.1) translateY(-10px); }
+    50% { transform: rotate(0deg) scale(1) translateY(0); }
+    75% { transform: rotate(15deg) scale(1.1) translateY(-10px); }
+    100% { transform: rotate(0deg) scale(1) translateY(0); }
+}
+

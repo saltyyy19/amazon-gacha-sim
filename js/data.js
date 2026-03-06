@@ -15,6 +15,16 @@ const gachaItems = [
     { name: "甲冑 等身大", rarity: "SSR", icon: "🛡️" },
     { name: "ドラム式洗濯乾燥機", rarity: "SSR", icon: "🧺" },
     { name: "ゲーミングPC RTX4090", rarity: "SSR", icon: "🖥️" },
+    { name: "高級キャンピングカー テント", rarity: "SSR", icon: "🚐" },
+    { name: "ロレックス 腕時計", rarity: "SSR", icon: "⌚" },
+    { name: "業務用水槽", rarity: "SSR", icon: "🐠" },
+    { name: "油圧式ショベル ミニ", rarity: "SSR", icon: "🚜" },
+    { name: "グランドピアノ", rarity: "SSR", icon: "🎹" },
+    { name: "プロジェクター 4K レーザー", rarity: "SSR", icon: "📽️" },
+    { name: "純プラチナ コイン", rarity: "SSR", icon: "🪙" },
+    { name: "天体望遠鏡 自動追尾", rarity: "SSR", icon: "🔭" },
+    { name: "最高級 ペルシャ絨毯", rarity: "SSR", icon: "🕌" },
+    { name: "酸素カプセル 家庭用", rarity: "SSR", icon: "💊" },
 
     // ==========================================
     // SR (Super Rare) - 8.5% probability
@@ -34,6 +44,16 @@ const gachaItems = [
     { name: "キャビア 100g", rarity: "SR", icon: "🐟" },
     { name: "PlayStation 5", rarity: "SR", icon: "🎮" },
     { name: "ポータブル電源 1000W", rarity: "SR", icon: "🔋" },
+    { name: "BALMUDA ザ・トースター", rarity: "SR", icon: "🍞" },
+    { name: "GoPro HERO 12", rarity: "SR", icon: "📹" },
+    { name: "DJI 空撮ドローン", rarity: "SR", icon: "🚁" },
+    { name: "超高級 旅館 ペア宿泊券", rarity: "SR", icon: "♨️" },
+    { name: "Yogibo Max", rarity: "SR", icon: "🛋️" },
+    { name: "高級ウイスキー 響", rarity: "SR", icon: "🥃" },
+    { name: "家庭用 プラネタリウム", rarity: "SR", icon: "🌌" },
+    { name: "電動アシスト自転車", rarity: "SR", icon: "🚲" },
+    { name: "3Dプリンター 家庭用", rarity: "SR", icon: "🖨️" },
+    { name: "高級マッサージチェア", rarity: "SR", icon: "💺" },
 
     // ==========================================
     // R (Rare) - 30% probability
@@ -58,6 +78,16 @@ const gachaItems = [
     { name: "ハッピーターン 缶", rarity: "R", icon: "🍘" },
     { name: "バブ 72錠", rarity: "R", icon: "🛀" },
     { name: "休足時間 18枚入", rarity: "R", icon: "🦶" },
+    { name: "強炭酸水 ウィルキンソン 24本", rarity: "R", icon: "🫧" },
+    { name: "ミックスナッツ 1kg", rarity: "R", icon: "🥜" },
+    { name: "サーモス 真空断熱タンブラー", rarity: "R", icon: "🍺" },
+    { name: "電動歯ブラシ ブラウン", rarity: "R", icon: "🦷" },
+    { name: "サウナハット", rarity: "R", icon: "🧖" },
+    { name: "マッサージガン 小型", rarity: "R", icon: "🔫" },
+    { name: "高級タオル 今治 5枚セット", rarity: "R", icon: "🛁" },
+    { name: "スマホスタンド 折りたたみ", rarity: "R", icon: "📱" },
+    { name: "ゲーミングマウス ロジクール", rarity: "R", icon: "🖱️" },
+    { name: "Bluetooth スピーカー 防水", rarity: "R", icon: "🎵" },
 
     // ==========================================
     // N (Normal) - 60% probability
@@ -81,5 +111,20 @@ const gachaItems = [
     { name: "ボールペン 黒", rarity: "N", icon: "🖊️" },
     { name: "ストロー 500本", rarity: "N", icon: "🥤" },
     { name: "段ボール箱 100サイズ", rarity: "N", icon: "📦" },
-    { name: "ゴミ袋 45L", rarity: "N", icon: "🗑️" }
+    { name: "ゴミ袋 45L", rarity: "N", icon: "🗑️" },
+    { name: "結束バンド 100本", rarity: "N", icon: "🎗️" },
+    { name: "ホッチキスの針", rarity: "N", icon: "🖇️" },
+    { name: "使い捨て マスク 50枚", rarity: "N", icon: "😷" },
+    { name: "安全ピン セット", rarity: "N", icon: "🧷" },
+    { name: "画鋲", rarity: "N", icon: "📌" },
+    { name: "クリアファイル 10枚", rarity: "N", icon: "📁" },
+    { name: "ぞうきん 5枚", rarity: "N", icon: "🧽" },
+    { name: "養生テープ", rarity: "N", icon: "🩹" },
+    { name: "三角定規", rarity: "N", icon: "📐" },
+    { name: "分度器", rarity: "N", icon: "📏" },
+    { name: "ラップ 50m", rarity: "N", icon: "🍱" },
+    { name: "アルミホイル", rarity: "N", icon: "🛸" },
+    { name: "食器用洗剤 詰替", rarity: "N", icon: "🫧" },
+    { name: "スポンジ 5個", rarity: "N", icon: "🧽" },
+    { name: "おろし金 小", rarity: "N", icon: "🥕" }
 ];
