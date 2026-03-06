@@ -176,8 +176,9 @@ function shareToX() {
 
     const text = `無料で回せるAmazon10連ガチャシミュレーター\n\n私の結果：${highlight}\n\n総ガチャ回数: ${pullCount}回\n\nあなたも回してみる👇\n`;
     const url = window.location.href; // Assumes Vercel deployment URL will be used
+    const hashtags = "Amazonガチャ,Amazon";
 
-    const tweetUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`;
+    const tweetUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}&hashtags=${encodeURIComponent(hashtags)}`;
     window.open(tweetUrl, '_blank');
 }
 
