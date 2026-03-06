@@ -11,6 +11,7 @@ const btnShare = document.getElementById('btn-share');
 const btnSaveImage = document.getElementById('btn-save-image');
 const resultsGrid = document.getElementById('results-grid');
 const pullCountEl = document.getElementById('pull-count');
+const resultsActions = document.querySelector('.results-actions');
 
 // Modal Elements
 const modalImage = document.getElementById('modal-image');
@@ -191,6 +192,13 @@ function saveResultsAsImage() {
     const originalScrollY = window.scrollY;
     window.scrollTo(0, 0);
 
+    // Hide the action buttons so they don't appear in the saved image
+    if (resultsActions) {
+        resultsActions.style.display = 'none';
+        // Also remove any box-shadow/border momentarily from card container if needed 
+        // to make it look perfectly clean.
+    }
+
     // Add a slight delay to ensure the browser paints the scroll position before capture
     setTimeout(() => {
         // Use html2canvas to capture the results grid
@@ -211,13 +219,17 @@ function saveResultsAsImage() {
             generatedImagePreview.src = imageBase64;
             modalImage.classList.remove('hidden');
 
-            // Reset button and scroll
+            // Reset UI
+            if (resultsActions) resultsActions.style.display = '';
             btnSaveImage.innerText = originalText;
             btnSaveImage.disabled = false;
             window.scrollTo(0, originalScrollY);
         }).catch(err => {
             console.error('Error generating image:', err);
             alert('画像の生成に失敗しました。');
+
+            // Reset UI
+            if (resultsActions) resultsActions.style.display = '';
             btnSaveImage.innerText = originalText;
             btnSaveImage.disabled = false;
             window.scrollTo(0, originalScrollY);
