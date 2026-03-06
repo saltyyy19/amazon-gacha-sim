@@ -51,8 +51,15 @@ function getRandomItem() {
 function doGachaPull() {
     // 1. Calculate Results secretly
     currentResults = [];
+    let maxRarityValue = 0; // N=0, R=1, SR=2, SSR=3
+    const rarityMap = { 'N': 0, 'R': 1, 'SR': 2, 'SSR': 3 };
+
     for (let i = 0; i < 10; i++) {
-        currentResults.push(getRandomItem());
+        const item = getRandomItem();
+        currentResults.push(item);
+        if (rarityMap[item.rarity] > maxRarityValue) {
+            maxRarityValue = rarityMap[item.rarity];
+        }
     }
 
     // 2. Increment stats
@@ -65,14 +72,38 @@ function doGachaPull() {
     screenAnim.classList.remove('hidden');
     screenAnim.classList.add('active');
 
-    // Wait 2.5 seconds for animation, then show results
+    // Promotion effects (昇格演出)
+    const box = document.getElementById('gacha-box');
+    box.className = 'box-sprite box-n'; // Reset to Normal
+
+    if (maxRarityValue >= 1) { // R or higher
+        setTimeout(() => box.className = 'box-sprite box-r', 800);
+    }
+    if (maxRarityValue >= 2) { // SR or higher
+        setTimeout(() => box.className = 'box-sprite box-sr', 1600);
+    }
+    if (maxRarityValue >= 3) { // SSR
+        setTimeout(() => box.className = 'box-sprite box-ssr', 2300);
+    }
+
+    // Wait 3.2 seconds for animation, then show results
     setTimeout(() => {
         renderResults();
         screenAnim.classList.remove('active');
         screenAnim.classList.add('hidden');
         screenResults.classList.remove('hidden');
         screenResults.classList.add('active');
-    }, 2500);
+    }, 3200);
+}
+
+// Security: HTML Escaping
+function escapeHTML(str) {
+    return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
 }
 
 // Render Results
@@ -83,7 +114,9 @@ function renderResults() {
         // Delay each card's animation slightly for a cascading effect
         const delay = index * 100;
 
-        // Construct Affiliate URL
+        // Construct Affiliate URL securely
+        const safeName = escapeHTML(item.name);
+        const safeRarity = escapeHTML(item.rarity);
         const query = encodeURIComponent(item.name);
         const url = `https://www.amazon.co.jp/s?k=${query}&tag=${AFFILIATE_TAG}`;
 
@@ -98,12 +131,10 @@ function renderResults() {
 
         card.innerHTML = `
             <div class="item-icon">${item.icon}</div>
-            <div class="item-name">${item.name}</div>
-            <div class="item-rarity">${item.rarity}</div>
+            <div class="item-name">${safeName}</div>
+            <div class="item-rarity">${safeRarity}</div>
+            <div class="buy-btn">Amazonで探す</div>
         `;
-
-        // If SSR, make a dramatic sound or effect (optional if we had audio)
-        // just relying on CSS for now
 
         resultsGrid.appendChild(card);
     });
