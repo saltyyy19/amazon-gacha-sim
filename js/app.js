@@ -189,75 +189,49 @@ function saveResultsAsImage() {
 
     const targetElement = document.getElementById('screen-results');
 
-    // iOS Safari specific fix: Clone off-screen often fails. 
-    // We must temporarily modify the live DOM to expand fully.
-    const html = document.documentElement;
-    const body = document.body;
-    const appContainer = document.querySelector('.app-container');
+    // Hide actions visually during capture using a filter
+    const filterFunc = (node) => {
+        // Exclude the results-actions div
+        if (node.classList && node.classList.contains('results-actions')) {
+            return false;
+        }
+        return true;
+    };
 
-    // Save original styles and scroll
-    const origHtmlHeight = html.style.height;
-    const origBodyHeight = body.style.height;
-    const origAppHeight = appContainer.style.height;
-    const origAppMinHeight = appContainer.style.minHeight;
-    const origScrollY = window.scrollY;
+    // dom-to-image is much more reliable for mobile flex layouts
+    // Use an extra scale factor for retina sharpness
+    const scale = window.devicePixelRatio || 2;
 
-    // Expand all containers to auto height to remove any hidden bounds
-    html.style.height = 'auto';
-    body.style.height = 'auto';
-    appContainer.style.height = 'auto';
-    appContainer.style.minHeight = 'auto';
-
-    // Hide actions
-    if (resultsActions) {
-        resultsActions.style.display = 'none';
-    }
-
-    // Scroll to top to prevent rendering offsets
+    // Temporarily ensure the element isn't hidden by scroll
     window.scrollTo(0, 0);
 
-    // Give the DOM a moment to re-layout
-    setTimeout(() => {
-        html2canvas(targetElement, {
-            backgroundColor: '#0f172a', // Match the body background
-            scale: window.devicePixelRatio || 2, // Retina support
-            useCORS: true,
-            windowWidth: html.scrollWidth,
-            windowHeight: html.scrollHeight
-        }).then(canvas => {
-            // Restore styles
-            html.style.height = origHtmlHeight;
-            body.style.height = origBodyHeight;
-            appContainer.style.height = origAppHeight;
-            appContainer.style.minHeight = origAppMinHeight;
-            if (resultsActions) resultsActions.style.display = '';
-            window.scrollTo(0, origScrollY);
-
-            // Convert to data URL
-            const imageBase64 = canvas.toDataURL("image/png");
-
+    domtoimage.toPng(targetElement, {
+        filter: filterFunc,
+        bgcolor: '#0f172a',
+        width: targetElement.offsetWidth * scale,
+        height: targetElement.offsetHeight * scale,
+        style: {
+            transform: `scale(${scale})`,
+            transformOrigin: 'top left',
+            width: `${targetElement.offsetWidth}px`,
+            height: `${targetElement.offsetHeight}px`
+        }
+    })
+        .then(function (dataUrl) {
             // Display the image in the modal
-            generatedImagePreview.src = imageBase64;
+            generatedImagePreview.src = dataUrl;
             modalImage.classList.remove('hidden');
 
             // Reset button
             btnSaveImage.innerText = originalText;
             btnSaveImage.disabled = false;
-        }).catch(err => {
-            // Restore styles
-            html.style.height = origHtmlHeight;
-            body.style.height = origBodyHeight;
-            appContainer.style.height = origAppHeight;
-            appContainer.style.minHeight = origAppMinHeight;
-            if (resultsActions) resultsActions.style.display = '';
-            window.scrollTo(0, origScrollY);
-
-            console.error('Error generating image:', err);
+        })
+        .catch(function (error) {
+            console.error('Error generating image!', error);
             alert('画像の生成に失敗しました。');
             btnSaveImage.innerText = originalText;
             btnSaveImage.disabled = false;
         });
-    }, 150);
 }
 
 // Run
