@@ -92,6 +92,21 @@ footer {
     border-top: 1px solid rgba(255, 255, 255, 0.1);
 }
 
+.footer-links {
+    margin-bottom: 1rem;
+}
+
+.footer-links a {
+    color: var(--primary-color);
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: bold;
+}
+
+.footer-links a:hover {
+    text-decoration: underline;
+}
+
 .amazon-disclosure {
     margin-top: 0.5rem;
     font-size: 0.7rem;
@@ -780,4 +795,64 @@ body.generating-image .item-info {
     margin-bottom: 0 !important;
     /* Remove space reserved for button */
     padding-bottom: 0 !important;
+}
+
+/* ==========================================================================
+   SEO Strategy & Text Content (Amazon Associate Compliance)
+   ========================================================================== */
+.seo-content {
+    margin: 2rem 1.5rem;
+    padding: 1.5rem;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: var(--radius);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.seo-content article {
+    margin-bottom: 2rem;
+}
+
+.seo-content article:last-child {
+    margin-bottom: 0;
+}
+
+.seo-content h3 {
+    color: var(--color-ssr);
+    font-size: 1.1rem;
+    margin-bottom: 1rem;
+    border-bottom: 1px solid rgba(245, 158, 11, 0.3);
+    padding-bottom: 0.5rem;
+}
+
+.seo-content p {
+    color: var(--text-secondary);
+    font-size: 0.85rem;
+    line-height: 1.6;
+    margin-bottom: 0.75rem;
+}
+
+.pickup-list {
+    padding-left: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.pickup-list li {
+    color: var(--text-secondary);
+    font-size: 0.85rem;
+    margin-bottom: 0.75rem;
+    line-height: 1.5;
+}
+
+.pickup-list strong {
+    color: var(--text-primary);
+}
+
+.seo-notice {
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    opacity: 0.8;
+    background: rgba(0, 0, 0, 0.2);
+    padding: 0.75rem;
+    border-radius: 4px;
+    margin-top: 1rem;
 }
