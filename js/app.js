@@ -187,31 +187,45 @@ function saveResultsAsImage() {
     btnSaveImage.innerText = '生成中...';
     btnSaveImage.disabled = true;
 
-    // Save current scroll position and scroll to top
-    // This is a crucial fix for iOS/Mobile Safari where html2canvas crops the image if scrolled down
-    const originalScrollY = window.scrollY;
-    window.scrollTo(0, 0);
+    const targetElement = document.getElementById('screen-results');
 
-    // Hide the action buttons so they don't appear in the saved image
-    if (resultsActions) {
-        resultsActions.style.display = 'none';
-        // Also remove any box-shadow/border momentarily from card container if needed 
-        // to make it look perfectly clean.
+    // Create an off-screen clone container to prevent viewport cropping
+    const cloneContainer = document.createElement('div');
+    cloneContainer.style.position = 'absolute';
+    cloneContainer.style.top = '0';
+    cloneContainer.style.left = '-9999px';
+    cloneContainer.style.width = targetElement.offsetWidth + 'px';
+    cloneContainer.style.height = 'auto'; // Force full height
+    cloneContainer.style.overflow = 'visible';
+
+    // Clone the element and apply specific un-clipping styles
+    const clone = targetElement.cloneNode(true);
+    clone.style.height = 'auto';
+    clone.style.overflow = 'visible';
+    clone.style.padding = '1rem'; // Ensure padding isn't lost
+    clone.classList.remove('hidden'); // Ensure it's active
+
+    // Hide actions in the clone
+    const actionsClone = clone.querySelector('.results-actions');
+    if (actionsClone) {
+        actionsClone.style.display = 'none';
     }
 
-    // Add a slight delay to ensure the browser paints the scroll position before capture
-    setTimeout(() => {
-        // Use html2canvas to capture the results grid
-        const targetElement = document.getElementById('screen-results');
+    cloneContainer.appendChild(clone);
+    // Append to app-container to inherit CSS cascades properly
+    document.querySelector('.app-container').appendChild(cloneContainer);
 
-        html2canvas(targetElement, {
+    // Give the DOM a moment to paint the clone
+    setTimeout(() => {
+        html2canvas(clone, {
             backgroundColor: '#0f172a', // Match the body background
-            scale: window.devicePixelRatio || 2, // Use device pixel ratio for sharper bounds on retina
+            scale: window.devicePixelRatio || 2, // Retina support
             useCORS: true,
-            scrollY: -window.scrollY, // Fix offset
-            windowWidth: document.documentElement.offsetWidth,
-            windowHeight: document.documentElement.scrollHeight
+            logging: false
         }).then(canvas => {
+            // Clean up the clone
+            cloneContainer.remove();
+
             // Convert to data URL
             const imageBase64 = canvas.toDataURL("image/png");
 
@@ -219,20 +233,15 @@ function saveResultsAsImage() {
             generatedImagePreview.src = imageBase64;
             modalImage.classList.remove('hidden');
 
-            // Reset UI
-            if (resultsActions) resultsActions.style.display = '';
+            // Reset button
             btnSaveImage.innerText = originalText;
             btnSaveImage.disabled = false;
-            window.scrollTo(0, originalScrollY);
         }).catch(err => {
+            cloneContainer.remove();
             console.error('Error generating image:', err);
             alert('画像の生成に失敗しました。');
-
-            // Reset UI
-            if (resultsActions) resultsActions.style.display = '';
             btnSaveImage.innerText = originalText;
             btnSaveImage.disabled = false;
-            window.scrollTo(0, originalScrollY);
         });
     }, 150);
 }
